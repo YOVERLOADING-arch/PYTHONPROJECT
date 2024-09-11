@@ -44,9 +44,40 @@ def signup():
         conn.close()
 
         flash('Account created successfully! You can now log in.', 'success')
-        return redirect(url_for('signup'))
+        return redirect(url_for('login'))
 
     return render_template('signup.html')
+
+# Route for Login Page
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Get form data
+        username = request.form['username']
+        password = request.form['password']
+
+        # Connect to the database
+        conn = sqlite3.connect('db.sqlite3')
+        cursor = conn.cursor()
+
+        # Check if the user exists and the password is correct
+        cursor.execute("SELECT * FROM User WHERE username=? AND password=?", (username, password))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))  # Redirect to home page after login
+        else:
+            flash('Invalid username or password', 'error')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+# Route for Home Page
+@app.route('/home')
+def home():
+    return 'Welcome to the home page!'
 
 if __name__ == "__main__":
     # Initialize the database
