@@ -1,16 +1,22 @@
+import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SECRET_KEY'] = 'your_secret_key'  # For flashing messages
-db = SQLAlchemy(app)
 
-# Define User model without email
-class User(db.Model):
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+# Function to initialize the database and create the User table if it doesn't exist
+def init_db():
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS User (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
 # Route for Signup Page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -20,19 +26,22 @@ def signup():
         username = request.form['username']
         password = request.form['password']
 
-        # Hash the password
-        hashed_password = generate_password_hash(password, method='sha256')
+        # Connect to the database
+        conn = sqlite3.connect('db.sqlite3')
+        cursor = conn.cursor()
 
         # Check if the user already exists
-        existing_user = User.query.filter_by(username=username).first()
+        cursor.execute("SELECT * FROM User WHERE username=?", (username,))
+        existing_user = cursor.fetchone()
         if existing_user:
             flash('Username already exists', 'error')
+            conn.close()
             return redirect(url_for('signup'))
 
-        # Create new user and add to the database
-        new_user = User(username=username, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+        # Insert new user into the database
+        cursor.execute("INSERT INTO User (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        conn.close()
 
         flash('Account created successfully! You can now log in.', 'success')
         return redirect(url_for('signup'))
@@ -40,4 +49,6 @@ def signup():
     return render_template('signup.html')
 
 if __name__ == "__main__":
+    # Initialize the database
+    init_db()
     app.run(debug=True)
