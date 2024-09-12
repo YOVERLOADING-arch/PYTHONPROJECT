@@ -22,15 +22,12 @@ def init_db():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # Get form data
         username = request.form['username']
         password = request.form['password']
 
-        # Connect to the database
         conn = sqlite3.connect('db.sqlite3')
         cursor = conn.cursor()
 
-        # Check if the user already exists
         cursor.execute("SELECT * FROM User WHERE username=?", (username,))
         existing_user = cursor.fetchone()
         if existing_user:
@@ -38,7 +35,6 @@ def signup():
             conn.close()
             return redirect(url_for('signup'))
 
-        # Insert new user into the database
         cursor.execute("INSERT INTO User (username, password) VALUES (?, ?)", (username, password))
         conn.commit()
         conn.close()
@@ -52,15 +48,12 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Get form data
         username = request.form['username']
         password = request.form['password']
 
-        # Connect to the database
         conn = sqlite3.connect('db.sqlite3')
         cursor = conn.cursor()
 
-        # Check if the user exists and the password is correct
         cursor.execute("SELECT * FROM User WHERE username=? AND password=?", (username, password))
         user = cursor.fetchone()
         conn.close()
@@ -74,12 +67,11 @@ def login():
 
     return render_template('login.html')
 
-# Route for Home Page
+# Route for Home Page (Main Front Page)
 @app.route('/home')
 def home():
-    return 'Welcome to the home page!'
+    return render_template('home.html')  # Render the home page template
 
 if __name__ == "__main__":
-    # Initialize the database
     init_db()
     app.run(debug=True)
