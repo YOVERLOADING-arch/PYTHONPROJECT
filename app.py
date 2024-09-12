@@ -2,9 +2,9 @@ import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # For flashing messages
+app.config['SECRET_KEY'] = 'your_secret_key'  
 
-# Function to initialize the database and create the User table if it doesn't exist
+
 def init_db():
     conn = sqlite3.connect('db.sqlite3')
     cursor = conn.cursor()
@@ -18,7 +18,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Route for Signup Page
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -44,7 +44,7 @@ def signup():
 
     return render_template('signup.html')
 
-# Route for Login Page
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -60,17 +60,17 @@ def login():
 
         if user:
             flash('Login successful!', 'success')
-            return redirect(url_for('home'))  # Redirect to home page after login
+            return redirect(url_for('home'))  
         else:
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
 
     return render_template('login.html')
 
-# Route for Home Page (Main Front Page)
+
 @app.route('/home')
 def home():
-    return render_template('home.html')  # Render the home page template
+    return render_template('home.html') 
 
 if __name__ == "__main__":
     init_db()
