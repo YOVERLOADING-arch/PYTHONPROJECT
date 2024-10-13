@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event</title>
+    <!-- Fontshare link for Clash Display font -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet">
+    
+    <style>
+        *{
+            background-color: black;
+        }
+        .size,a{
+            font-size:200%;
+            text-align: center;
+        }
+        .size1{
+            position:relative;
+            font-size:400%;
+            text-align: center;
+        }
+        p{
+            text-align: center;
+        }
+        body{
+            font-family: 'Clash display',sans-serif;
+        }
+        h1{
+            text-align: center;
+            font-size:500%;
+            /* background-color:rgba(106,90,205,0.7);
+            border-color: slateblue; */
+        }
+        h2{
+            padding-top: 40px;
+            text-align: center;
+        }
+        .services{
+            display:flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .button {
+            display:inline-block;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgb(22, 76, 201);
+            text-decoration:none;
+            color:white;
+            width: 300px;
+            margin: 15px;
+            padding: 15px;
+            transition: transform 0.2s;
+            text-align: center;
+}
+        .button:hover {
+            background-color: black;
+            transform:scale(1.05);
+        }
+        .img1{
+            border-radius: 10%;
+            max-width: 200px;
+            top: 50px;
+            left: 10%;
+            transform: rotate(-15deg);
+        }
+        .img2{
+            border-radius: 10%;
+            max-width: 200px;
+            top: 50px;
+            left: 10%;
+            transform: rotate(15deg);
+        }
+        .img3{
+            border-radius: 10%;
+            left:40%;
+            max-width: 400px;
+            top: 50px;
+            transform: rotate(-15deg);
+        }
+        .img4{
+            border-radius: 10%;
+            max-width: 200px;
+            top: 50px;
+            left: 10%;
+            transform: rotate(15deg);
+        }
+        .img5{
+            border-radius: 10%;
+            left:40%;
+            max-width: 200px;
+            top: 50px;
+            transform: rotate(-15deg);
+        }
+        .img6{
+            border-radius: 10%;
+            max-width: 200px;
+            top: 50px;
+            left: 10%;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+<body>
+   
+    <h1 >Event Horizon</h1>
+    
+    <div class="size1">Book Trending Events From 'THE' Verified App</div>
+  
+    <div></div>
+        <img class="img1" src="{{url_for('static',filename='7f411a08-2a7a-43dc-a193-95ff039c449d.jpeg')}}" alt="Event image 1">
+        <img class="img2" src="{{url_for('static',filename='GENERAL ADMISSION CONCERT TIPS.jpeg')}}" alt="Event image 2">
+        <img class="img3" src="{{url_for('static',filename='Personalized Events Empower Planners and Attendees.jpeg')}}" alt="Event image 3">
+        <img class="img4" src="{{url_for('static',filename='Top 10 Ways To Make Your Summer Unforgettable - Society19.jpeg')}}" alt="Event image 4">
+        <img class="img5" src="{{url_for('static',filename='img5.jpeg')}}" alt="Event image 5">
+        <img class="img6" src="{{url_for('static',filename='Shoreditch Studios - East London Photographic Studio & Event Venue For Hire.jpeg')}}" alt="Event image 6">
+        </div>
+    <br><br><br><br><br><br><br><br>
+    <div class="size">
+        Let's get you Started
+    </div>
+
+    <div class="services">
+
+        <a href="/login" class="button">
+        Log In
+        </a>
+        <h2>or</h2>
+        <a href="/signup" class="button">
+        Sign Up
+        </a>
+    
+
+    </div>
+    <br><br><br><br><br><br><br>
+</body>
+</html>
