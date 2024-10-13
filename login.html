@@ -4,30 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('/static/maxresdefault-1200x675.webp'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1000%;
             margin: 0;
         }
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: space-between; /* Aligns form and text side by side */
+            align-items: center;
+            padding: 0 50px; /* Adds space on the sides */
+            margin: 0;
+            background-color: #000;
+        }
+        .text-section {
+            flex-grow: 1;
+            max-width: 50%;
+        }
         .container {
-            background: rgba(255, 255, 255, 0.9); 
-            padding: 2em;
+            background: rgba(5, 5, 5, 0.9);
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 100%;
+            box-shadow: 0 0 10px rgb(13, 96, 239);
+            padding: 2em;
             max-width: 400px;
+            width: 100%;
         }
         h2 {
             margin-top: 0;
-            color: #333;
+            color: #fff;
         }
         form {
             display: flex;
@@ -35,7 +43,7 @@
         }
         label {
             margin-bottom: 0.5em;
-            color: #555;
+            color: #fff;
         }
         input[type="text"],
         input[type="password"] {
@@ -72,29 +80,47 @@
             margin-bottom: 0.5em;
         }
         .messages .error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #ffffff;
+            color: #da3949;
         }
         .messages .success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #ffffff;
+            color: #34cd58;
+        }
+        .signup-link{
+            margin-top:1em;
+            text-align: center;
+            color:#fff;
+
+        }
+        .signup-link a{
+            color:#007bff;
+            text-decoration: none;
+            cursor:pointer;
+            transition: background-color 0.3s ease;
+        }
+        .signup-link a:hover{
+            color:#549be1;
         }
     </style>
 </head>
 <body>
+    <div class="text-section">
+        <h1>Event Horizon</h1>
+    </div>
     <div class="container">
         <h2>Login</h2>
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="messages">
-                    <ul>
-                        {% for category, message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-        {% endwith %}
+        {% if messages %}
+            <div class="messages">
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
         <form method="POST" action="/login">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
@@ -104,6 +130,10 @@
 
             <button type="submit">Login</button>
         </form>
+        <div class="signup-link">
+            If You Don't Already Have An Account, <a href="/signup">Signup</a>.
+        </div>
     </div>
 </body>
 </html>
+
