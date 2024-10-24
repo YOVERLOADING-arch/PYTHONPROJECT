@@ -8,6 +8,11 @@ app.config['SECRET_KEY'] = 'your_secret_key'  # For flashing messages
 def init_db():
     conn = sqlite3.connect('db.sqlite3')
     cursor = conn.cursor()
+    
+    # Enable foreign key support
+    cursor.execute('PRAGMA foreign_keys = ON')
+    
+    # Create User table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS User (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,14 +20,26 @@ def init_db():
             password TEXT NOT NULL
         )
     ''')
+    
+    # Create User_info table with a foreign key referencing the User table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS User_info (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            dob TEXT NOT NULL,
+            address TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
+        )
+    ''')
+    
     conn.commit()
     conn.close()
 
-#Route for EventHorizon
+# Route for EventHorizon
 @app.route('/')
 def EventHorizon():
     return render_template('EventHorizon.html')
-
 
 # Route for Signup Page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -76,9 +93,32 @@ def login():
 # Route for Home Page (Main Front Page)
 @app.route('/home')
 def home():
-    return render_template('home.html') 
+    return render_template('home.html')
 
+# Route for User Info Page
 
+@app.route('/user-info', methods=['GET', 'POST'])
+def user_info():
+    if request.method == 'POST':
+        name = request.form['name']
+        dob = request.form['dob']
+        address = request.form['address']
+
+        conn = sqlite3.connect('db.sqlite3')
+        cursor = conn.cursor()
+
+        # Insert data into the User_info table, specifying the columns
+        cursor.execute("INSERT INTO User_info (user_id, name, dob, address) VALUES ((SELECT id FROM User WHERE username=?), ?, ?, ?)",
+                       (name, dob, address))
+        conn.commit()
+        conn.close()
+
+        flash('Information submitted successfully!', 'success')
+        return redirect(url_for('home'))
+
+    return render_template('userinfo.html')
+
+# Event Category Routes
 @app.route('/concerts')
 def concerts():
     return render_template('concerts.html')
